@@ -176,6 +176,19 @@ https://github.com/webadderallorg/Recordly/releases
 
 ---
 
+## Debian / Ubuntu (amd64)
+
+To download and verify the latest stable Debian package, run this from a clone of the repository:
+
+```bash
+sh scripts/download-deb.sh
+sudo apt install ./Recordly-linux-x64.deb
+```
+
+The script requires `curl` and `sha256sum`. To download a specific release instead, pass its tag, for example `sh scripts/download-deb.sh v1.4.0`. The release must contain the Debian package and `SHA256SUMS.txt`. To update, download and install a newer package in the same way; move or remove the previous download first.
+
+---
+
 ## Arch Linux / Manjaro (yay)
 
 Install from the AUR ([recordly-bin](https://aur.archlinux.org/packages/recordly-bin)):

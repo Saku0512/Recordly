@@ -178,7 +178,8 @@ jobs:
           npm run build:platform-native-helpers
           npx tsc
           npx vite build
-          npx electron-builder --linux dir AppImage --x64 --publish never
+          npx electron-builder --linux dir AppImage deb --x64 --publish never
+          test -f release/Recordly-linux-x64.deb
 
       - name: Smoke test packaged Linux paths
         run: npm run smoke:packaged-binaries
@@ -197,6 +198,7 @@ jobs:
           name: linux-x64-release
           path: |
             release/**/*.AppImage
+            release/**/*.deb
             release/**/*.blockmap
             release/latest-linux.yml
             release/SHA256SUMS*.txt

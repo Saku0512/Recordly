@@ -106,7 +106,8 @@
   },
   "linux": {
     "target": [
-      "AppImage"
+      "AppImage",
+      "deb"
     ],
     "icon": "icons/icons/png",
     "artifactName": "${productName}-linux-x64.${ext}",

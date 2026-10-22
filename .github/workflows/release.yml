@@ -523,7 +523,8 @@ jobs:
           npm run build:platform-native-helpers
           npx tsc
           npx vite build
-          npx electron-builder --linux dir AppImage --x64 --publish never
+          npx electron-builder --linux dir AppImage deb --x64 --publish never
+          test -f release/Recordly-linux-x64.deb
 
       - name: Smoke test packaged Linux x64 paths
         run: npm run smoke:packaged-binaries
@@ -542,6 +543,7 @@ jobs:
           name: linux-x64-release
           path: |
             release/*.AppImage
+            release/*.deb
             release/*.blockmap
             release/latest-linux.yml
             release/SHA256SUMS*.txt
@@ -663,6 +665,7 @@ jobs:
             release-assets/windows-x64/*.exe
             release-assets/windows-x64/*.blockmap
             release-assets/linux-x64/*.AppImage
+            release-assets/linux-x64/*.deb
             release-assets/linux-x64/*.blockmap
           )
 
@@ -678,6 +681,11 @@ jobs:
           fi
 
           assets+=("${update_metadata[@]}")
+
+          if [ ! -f release-assets/linux-x64/Recordly-linux-x64.deb ]; then
+            echo "Required Linux deb package is missing."
+            exit 1
+          fi
 
           if [ ${#assets[@]} -eq 0 ]; then
             echo "No release assets found to checksum."
