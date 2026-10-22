@@ -2,17 +2,23 @@
 set -eu
 
 repo_url=https://github.com/webadderallorg/Recordly
-artifact=Recordly-linux-x64.deb
 
 if [ "$#" -gt 1 ]; then
-  echo "Usage: sh scripts/download-deb.sh [release-tag]" >&2
+  echo "Usage: sh -s -- [release-tag]" >&2
   exit 1
 fi
 
-if [ "$(uname -s)" != Linux ] || [ "$(uname -m)" != x86_64 ]; then
-  echo "The Debian package is currently available only for Linux x86_64 (amd64)." >&2
+if [ "$(uname -s)" != Linux ]; then
+  echo "The Debian package is available only for Linux." >&2
   exit 1
 fi
+
+case "$(uname -m)" in
+  x86_64|amd64) arch=x64 ;;
+  aarch64|arm64) arch=arm64 ;;
+  *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+esac
+artifact=Recordly-linux-$arch.deb
 
 for command in curl sha256sum mktemp; do
   if ! command -v "$command" >/dev/null 2>&1; then

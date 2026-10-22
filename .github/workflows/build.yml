@@ -142,7 +142,16 @@ jobs:
           retention-days: 30
 
   build-linux:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runner: ubuntu-latest
+            targets: dir AppImage deb
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            targets: dir deb
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -178,8 +187,11 @@ jobs:
           npm run build:platform-native-helpers
           npx tsc
           npx vite build
-          npx electron-builder --linux dir AppImage deb --x64 --publish never
-          test -f release/Recordly-linux-x64.deb
+          npx electron-builder --linux ${{ matrix.targets }} --${{ matrix.arch }} --publish never
+          test -f release/Recordly-linux-${{ matrix.arch }}.deb
+          expected_arch=${{ matrix.arch }}
+          if [ "$expected_arch" = x64 ]; then expected_arch=amd64; fi
+          test "$(dpkg-deb -f release/Recordly-linux-${{ matrix.arch }}.deb Architecture)" = "$expected_arch"
 
       - name: Smoke test packaged Linux paths
         run: npm run smoke:packaged-binaries
@@ -195,7 +207,7 @@ jobs:
       - name: Upload Linux build
         uses: actions/upload-artifact@v4
         with:
-          name: linux-x64-release
+          name: linux-${{ matrix.arch }}-release
           path: |
             release/**/*.AppImage
             release/**/*.deb

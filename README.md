@@ -176,16 +176,21 @@ https://github.com/webadderallorg/Recordly/releases
 
 ---
 
-## Debian / Ubuntu (amd64)
+## Debian / Ubuntu (amd64 and arm64)
 
-To download and verify the latest stable Debian package, run this from a clone of the repository:
+Download and verify the latest stable Debian package (the script detects the architecture):
 
 ```bash
-sh scripts/download-deb.sh
-sudo apt install ./Recordly-linux-x64.deb
+curl -fsSL https://raw.githubusercontent.com/webadderallorg/Recordly/main/scripts/download-deb.sh | sh
 ```
 
-The script requires `curl` and `sha256sum`. To download a specific release instead, pass its tag, for example `sh scripts/download-deb.sh v1.4.0`. The release must contain the Debian package and `SHA256SUMS.txt`. To update, download and install a newer package in the same way; move or remove the previous download first.
+The script prints the `sudo apt install` command for the downloaded package. It requires `curl` and `sha256sum`. To download a specific release, pass its tag to the script, for example:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/webadderallorg/Recordly/main/scripts/download-deb.sh | sh -s -- v1.4.0
+```
+
+The release must contain the package for your architecture and `SHA256SUMS.txt`. To update, download and install a newer package in the same way; move or remove the previous download first.
 
 ---
 

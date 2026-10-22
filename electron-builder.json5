@@ -110,8 +110,11 @@
       "deb"
     ],
     "icon": "icons/icons/png",
-    "artifactName": "${productName}-linux-x64.${ext}",
+    "artifactName": "${productName}-linux-${arch}.${ext}",
     "category": "AudioVideo"
+  },
+  "deb": {
+    "maintainer": "webadderall"
   },
   "win": {
     "target": [
