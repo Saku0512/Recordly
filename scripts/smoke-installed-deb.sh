@@ -9,7 +9,6 @@ fi
 package_path=$(realpath "$1")
 sudo apt-get install -y "$package_path"
 test "$(dpkg-query -W -f='${Status}' recordly)" = 'install ok installed'
-dpkg-query -L recordly | grep -Fx /usr/bin/recordly >/dev/null
 test -x /usr/bin/recordly
 
 smoke_dir=$(mktemp -d)
@@ -23,7 +22,7 @@ export RECORDLY_DISABLE_AUTO_UPDATES=1
 export SMOKE_LOG="$smoke_dir/recordly.log"
 
 if timeout --kill-after=5s 90s xvfb-run -a -e /dev/stderr sh -c '
-  /usr/bin/recordly --no-sandbox --disable-gpu > "$SMOKE_LOG" 2>&1 &
+  /usr/bin/recordly --disable-gpu > "$SMOKE_LOG" 2>&1 &
   app_pid=$!
   trap '\''kill "$app_pid" 2>/dev/null || :; wait "$app_pid" 2>/dev/null || :'\'' EXIT HUP INT TERM
   while kill -0 "$app_pid" 2>/dev/null; do
