@@ -188,10 +188,10 @@ jobs:
           npx tsc
           npx vite build
           npx electron-builder --linux ${{ matrix.targets }} --${{ matrix.arch }} --publish never
-          test -f release/Recordly-linux-${{ matrix.arch }}.deb
           expected_arch=${{ matrix.arch }}
           if [ "$expected_arch" = x64 ]; then expected_arch=amd64; fi
-          test "$(dpkg-deb -f release/Recordly-linux-${{ matrix.arch }}.deb Architecture)" = "$expected_arch"
+          test -f "release/Recordly-linux-$expected_arch.deb"
+          test "$(dpkg-deb -f "release/Recordly-linux-$expected_arch.deb" Architecture)" = "$expected_arch"
 
       - name: Smoke test packaged Linux paths
         run: npm run smoke:packaged-binaries

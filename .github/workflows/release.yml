@@ -524,8 +524,8 @@ jobs:
           npx tsc
           npx vite build
           npx electron-builder --linux dir AppImage deb --x64 --publish never
-          test -f release/Recordly-linux-x64.deb
-          test "$(dpkg-deb -f release/Recordly-linux-x64.deb Architecture)" = amd64
+          test -f release/Recordly-linux-amd64.deb
+          test "$(dpkg-deb -f release/Recordly-linux-amd64.deb Architecture)" = amd64
 
       - name: Smoke test packaged Linux x64 paths
         run: npm run smoke:packaged-binaries
@@ -766,9 +766,9 @@ jobs:
 
           assets+=("${update_metadata[@]}")
 
-          for arch in x64 arm64; do
-            if [ ! -f "release-assets/linux-$arch/Recordly-linux-$arch.deb" ]; then
-              echo "Required Linux $arch deb package is missing."
+          for file in release-assets/linux-x64/Recordly-linux-amd64.deb release-assets/linux-arm64/Recordly-linux-arm64.deb; do
+            if [ ! -f "$file" ]; then
+              echo "Required Linux deb package is missing: $file"
               exit 1
             fi
           done

@@ -14,7 +14,7 @@ if [ "$(uname -s)" != Linux ]; then
 fi
 
 case "$(uname -m)" in
-  x86_64|amd64) arch=x64 ;;
+  x86_64|amd64) arch=amd64 ;;
   aarch64|arm64) arch=arm64 ;;
   *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
 esac
